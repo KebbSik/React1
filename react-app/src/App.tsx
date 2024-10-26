@@ -3,28 +3,22 @@ import Alert from "./components/Alert";
 import Button from "./components/Button";
 import ListGroup from "./components/ListGroup";
 import "./App.css";
+import { BsCalendar2DateFill } from "react-icons/bs";
 
 function App() {
   const [alertVisible, alertVisibility] = useState(false);
 
   return (
-    // <div>
-    //   {alertVisible && (
-    //     <Alert onClose={() => alertVisibility(false)}>
-    //       <span>This is an alert shown after click the button! </span>
-    //     </Alert>
-    //   )}
-    //   <Button color="danger" onClick={() => alertVisibility(true)}>
-    //     Click me!
-    //   </Button>
-    // </div>
-    <ListGroup
-      items={["New York", "Los Angeles", "San Francisco"]}
-      heading={"Miami"}
-      onSelectItem={function (item: string): void {
-        console.log(item, "clicked!");
-      }}
-    />
+    <div>
+      <ListGroup
+        items={["New York", "Los Angeles", "San Francisco"]}
+        heading={"Miami"}
+        onSelectItem={function (item: string): void {
+          console.log(item, "clicked!");
+        }}
+      />
+      <BsCalendar2DateFill color="red" size="40" />
+    </div>
   );
 }
 
