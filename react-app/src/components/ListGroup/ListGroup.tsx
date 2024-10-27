@@ -23,7 +23,7 @@ interface Props {
 
 function ListGroup({ items, heading, onSelectItem }: Props) {
   // Hook
-  const [selectedIntex, setStelectedIndex] = useState(0);
+  const [selectedIntex, setStelectedIndex] = useState(-1);
 
   return (
     <>

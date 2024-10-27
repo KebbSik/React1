@@ -4,6 +4,7 @@ import Button from "./components/Button/Button";
 import ListGroup from "./components/ListGroup";
 import "./App.css";
 import { BsCalendar2DateFill } from "react-icons/bs";
+import Like from "./components/Like/Like";
 
 function App() {
   const [alertVisible, alertVisibility] = useState(false);
@@ -24,6 +25,7 @@ function App() {
       >
         Click me please!
       </Button>
+      <Like onClick={() => console.log("clicked")} />
     </div>
   );
 }
