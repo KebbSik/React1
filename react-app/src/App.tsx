@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Alert from "./components/Alert";
-import Button from "./components/Button";
+import Button from "./components/Button/Button";
 import ListGroup from "./components/ListGroup";
 import "./App.css";
 import { BsCalendar2DateFill } from "react-icons/bs";
@@ -18,6 +18,9 @@ function App() {
         }}
       />
       <BsCalendar2DateFill color="red" size="40" />
+      <Button onClick={() => console.log("Button has been clicked!")}>
+        Click me please!
+      </Button>
     </div>
   );
 }
