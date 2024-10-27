@@ -1,12 +1,21 @@
-.button{
-    background-color:#4CAF50;
-    color: white;
-    padding: 0.5rem 1rem;
-    border-style: none;
-    border-radius:  5px;
+.btn{
+    padding: 8px 12px;
+    border-radius:  3px;
+    border: 0;
 }
 
-.button:hover{
+.btn-primary{
+    background-color: #0d6efd;
+    color: white;
+}
+
+.btn-danger{
+    background-color: #ec1248;
+    color: white;
+}
+
+
+/* .button:hover{
     background-color: #45a049;
     cursor:pointer;
-}
+} */

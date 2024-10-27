@@ -18,7 +18,10 @@ function App() {
         }}
       />
       <BsCalendar2DateFill color="red" size="40" />
-      <Button onClick={() => console.log("Button has been clicked!")}>
+      <Button
+        color="primary"
+        onClick={() => console.log("Button has been clicked!")}
+      >
         Click me please!
       </Button>
     </div>
