@@ -2,22 +2,18 @@ import { useState } from "react";
 import "./App.css";
 
 function App() {
-  const [tags, setTags] = useState(["happy", "cheerful"]);
-
+  const [bugs, setBugs] = useState([
+    { id: 1, title: "Bug 1", fixed: false },
+    { id: 2, title: "Bug 2", fixed: false },
+  ]);
   const handleClick = () => {
-    // Add
-    // setTags([...tags, "exciting"]);
-
-    //Remove
-    // setTags(tags.filter((tag) => tag !== "happy"));
-
-    //Update
-    setTags(tags.map((tag) => (tag === "happy" ? "happiness" : tag)));
+    setBugs(bugs.map((bug) => (bug.id === 1 ? { ...bug, fixed: true } : bug)));
   };
 
   return (
     <div>
-      {tags + " "}
+      {bugs.map((bug) => bug.title.toString() + bug.fixed.toString() + " ")}
+
       <button onClick={handleClick}>Click me!</button>
     </div>
   );
