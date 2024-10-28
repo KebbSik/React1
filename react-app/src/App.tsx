@@ -2,18 +2,25 @@ import { useState } from "react";
 import "./App.css";
 
 function App() {
-  const [isVisible, setVisiblity] = useState(false);
-  let count = 0;
-  const [isApproved, setApproved] = useState(true);
+  // const [firstName, setfirstName] = useState("Kevin");
+  // const [lastName, setlastName] = useState("Sarfo");
+  const [person, setPerson] = useState({
+    firstName: "",
+    lastName: "",
+  });
+  const [isLoading, setLoading] = useState(false);
 
   const handleClick = () => {
-    setVisiblity(true);
-    count++;
-    console.log(isVisible, count);
+    setPerson({
+      firstName: "Kevin",
+      lastName: "Sarfo",
+    });
   };
+
   return (
     <div>
-      <button onClick={handleClick}>Show</button>
+      <button onClick={handleClick}>Change Data</button>
+      {person.firstName} {person.lastName}
     </div>
   );
 }
