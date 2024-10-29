@@ -1,26 +1,29 @@
+import { is } from "immer/dist/internal.js";
 import React, { ReactNode, useState } from "react";
 
 interface Props {
-  children: ReactNode;
-  //   onClick: () => void;
-  maxLength: number;
+  children: string;
+  maxChars?: number;
 }
 
-const ExpandableText = ({ children, maxLength }: Props) => {
-  const [state, setState] = useState(true);
-  const text = children as string;
+const ExpandableText = ({ children, maxChars = 100 }: Props) => {
+  const [isExpanded, setExpanded] = useState(false);
+
+  if (children.length <= maxChars) return <p>{children}</p>;
+
+  const text = isExpanded ? children : children.substring(0, maxChars) + "...";
+
   return (
-    <div>
-      {/* <span style={{ maxWidth: 10 }}>{children}</span> */}
-      <span>{state ? text : `${text.substring(0, maxLength)}...`}</span>
+    <p>
+      {text}{" "}
       <button
         onClick={() => {
-          setState(!state);
+          setExpanded(!isExpanded);
         }}
       >
-        {state ? "Less" : "More"}
+        {isExpanded ? "Less" : "More"}
       </button>
-    </div>
+    </p>
   );
 };
 
