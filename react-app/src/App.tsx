@@ -2,13 +2,12 @@ import { useState } from "react";
 import "./App.css";
 import produce from "immer";
 import ExpandableText from "./components/ExpandableText/ExpandableText";
+import Form from "./components/Form/Form";
 
 function App() {
   return (
     <div>
-      <ExpandableText maxChars={10}>
-        hello wordaasdasdsadasfasdgefhearage
-      </ExpandableText>
+      <Form></Form>
     </div>
   );
 }
