@@ -1,29 +1,19 @@
 import React, { FormEvent, useReducer, useRef, useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
 
-/* Remember that 'onChange' property render component every time, when user fill the input 
-if we have too many controlled componenets on our webpage, it could causing crashes... 
-use it onlny when we do not have many controlled componenets  */
 const Form = () => {
-  const [person, setPerson] = useState({
-    name: "",
-    age: "",
-  });
+  const { register, handleSubmit } = useForm();
 
-  const handleSubmit = (event: FormEvent) => {
-    event.preventDefault();
-    console.log(person);
-  };
+  const onSubmit = (data: FieldValues) => console.log(data);
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="mb-3">
         <label htmlFor="name" className="form-label">
           Name
         </label>
         <input
-          onChange={(event) =>
-            setPerson({ ...person, name: event.target.value })
-          }
-          value={person.name}
+          {...register("name")}
           id="name"
           type="text"
           className="form-control"
@@ -34,10 +24,7 @@ const Form = () => {
           Age
         </label>
         <input
-          onChange={(event) => {
-            setPerson({ ...person, age: parseInt(event.target.value) });
-          }}
-          value={person.age}
+          {...register("age")}
           id="age"
           type="number"
           className="form-control"
