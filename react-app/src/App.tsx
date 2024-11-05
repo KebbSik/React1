@@ -5,6 +5,8 @@ import ExpandableText from "./components/ExpandableText/ExpandableText";
 import Form from "./components/Form/Form";
 import ExpenseTracker from "./components/ExpenseTracker/ExpenseTracker";
 import ExpenseList from "./components/expense-tracker/components/ExpenseList";
+import ExpenseFilter from "./components/expense-tracker/components/ExpenseFilter";
+
 function App() {
   const [expenses, setExpenses] = useState([
     {
@@ -39,11 +41,28 @@ function App() {
     },
   ]);
 
+  const [selectedCategory, setSelectedCategory] = useState("");
+
+  const filteredExpenses = selectedCategory
+    ? expenses.filter(
+        (e) =>
+          e.category.toLocaleLowerCase() ===
+          selectedCategory.toLocaleLowerCase()
+      )
+    : expenses;
+
   return (
     <div>
+      <div className="mb-3">
+        <ExpenseFilter
+          onSelectCategory={(selectedCategory) =>
+            setSelectedCategory(selectedCategory)
+          }
+        />
+      </div>
       {/* <ExpenseTracker></ExpenseTracker> */}
       <ExpenseList
-        expenses={expenses}
+        expenses={filteredExpenses}
         onDelete={(id) => {
           setExpenses(expenses.filter((e) => e.id !== id));
         }}
