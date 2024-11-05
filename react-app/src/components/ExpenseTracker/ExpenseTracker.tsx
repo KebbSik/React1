@@ -17,6 +17,14 @@ type FormData = z.infer<typeof schema>;
 const ExpenseTracker = () => {
   const [expensesList, setExpensesList] = useState<FormData[]>([]);
 
+  const [selectedCategory, setSelectedCategory] = useState("");
+
+  const handleCategoryChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setSelectedCategory(event.target.value);
+    console.log(selectedCategory);
+  };
   const {
     register,
     handleSubmit,
@@ -26,7 +34,7 @@ const ExpenseTracker = () => {
   const onSubmit = (data: FormData) => {
     setExpensesList((prevList) => [...prevList, data]);
 
-    console.log(expensesList);
+    // console.log(expensesList);
   };
 
   const removeElement = (el: {
@@ -67,6 +75,10 @@ const ExpenseTracker = () => {
     ]);
   }, []);
 
+  const filteredExpenses = selectedCategory
+    ? expensesList.filter((expense) => expense.category === selectedCategory)
+    : expensesList;
+
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -104,7 +116,7 @@ const ExpenseTracker = () => {
             <option value="">All categories</option>
             <option value="groceries">Groceries</option>
             <option value="utilities">Utilities</option>
-            <option value="entertaiment">Entertaiment</option>
+            <option value="entertainment">Entertainment</option>
           </select>
         </div>
         {errors.category && (
@@ -118,12 +130,17 @@ const ExpenseTracker = () => {
           Submit
         </button>
       </form>
-      {/* <select id="category2" className="form-select mb-3">
+      <select
+        value={selectedCategory}
+        onChange={handleCategoryChange}
+        id="category2"
+        className="form-select mb-3"
+      >
         <option value="">All categories</option>
         <option value="groceries">Groceries</option>
         <option value="utilities">Utilities</option>
-        <option value="entertaiment">Entertaiment</option>
-      </select> */}
+        <option value="entertainment">Entertainment</option>
+      </select>
 
       <table className="table">
         <tr>
@@ -132,7 +149,7 @@ const ExpenseTracker = () => {
           <th className="border p-2">Category</th>
           <th className="border p-2"></th>
         </tr>
-        {expensesList.map((el) => (
+        {filteredExpenses.map((el) => (
           <tr className="">
             <th className="border p-2">
               {el.description.charAt(0).toUpperCase() + el.description.slice(1)}
@@ -151,6 +168,13 @@ const ExpenseTracker = () => {
             </th>
           </tr>
         ))}
+        <tr className=" text-success">
+          <th className="border p-2">Total</th>
+          <th className="border p-2">
+            $
+            {filteredExpenses.reduce((sum, current) => sum + current.amount, 0)}
+          </th>
+        </tr>
       </table>
     </div>
   );
