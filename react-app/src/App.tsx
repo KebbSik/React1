@@ -1,82 +1,22 @@
-import { useState } from "react";
+import { useEffect, useRef } from "react";
 import "./App.css";
-import produce from "immer";
-import ExpandableText from "./components/ExpandableText/ExpandableText";
-import Form from "./components/Form/Form";
-import ExpenseTracker from "./components/ExpenseTracker/ExpenseTracker";
-import ExpenseList from "./components/expense-tracker/components/ExpenseList";
-import ExpenseFilter from "./components/expense-tracker/components/ExpenseFilter";
-import ExpenseForm from "./components/expense-tracker/components/ExpenseForm";
-import categories from "./components/expense-tracker/categories";
 
 function App() {
-  const [expenses, setExpenses] = useState([
-    {
-      id: 1,
-      description: "milk",
-      amount: 5,
-      category: "groceries",
-    },
-    {
-      id: 2,
-      description: "eggs",
-      amount: 10,
-      category: "groceries",
-    },
-    {
-      id: 3,
-      description: "electricity",
-      amount: 100,
-      category: "utilities",
-    },
-    {
-      id: 4,
-      description: "movies",
-      amount: 15,
-      category: "entertainment",
-    },
-    {
-      id: 5,
-      description: "milk",
-      amount: 5,
-      category: "groceries",
-    },
-  ]);
+  const ref = useRef<HTMLInputElement>(null);
 
-  const [selectedCategory, setSelectedCategory] = useState("");
+  // after render
+  useEffect(() => {
+    // side effect
+    if (ref.current) ref.current.focus();
+  });
 
-  const filteredExpenses = selectedCategory
-    ? expenses.filter(
-        (e) =>
-          e.category.toLocaleLowerCase() ===
-          selectedCategory.toLocaleLowerCase()
-      )
-    : expenses;
+  useEffect(() => {
+    document.title = "My App";
+  });
 
   return (
     <div>
-      <div className="mb-5">
-        <ExpenseForm
-          onSubmit={(expense) => {
-            setExpenses([...expenses, { ...expense, id: expenses.length + 1 }]);
-            console.log(expenses);
-          }}
-        />
-      </div>
-      <div className="mb-3">
-        <ExpenseFilter
-          onSelectCategory={(selectedCategory) =>
-            setSelectedCategory(selectedCategory)
-          }
-        />
-      </div>
-      {/* <ExpenseTracker></ExpenseTracker> */}
-      <ExpenseList
-        expenses={filteredExpenses}
-        onDelete={(id) => {
-          setExpenses(expenses.filter((e) => e.id !== id));
-        }}
-      ></ExpenseList>
+      <input ref={ref} type="text" className="form-control" />
     </div>
   );
 }
