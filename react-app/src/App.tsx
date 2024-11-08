@@ -1,22 +1,22 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
+import ProductList from "./components/ProductList/ProductList";
+import { current } from "immer/src/internal.js";
 
 function App() {
-  const ref = useRef<HTMLInputElement>(null);
-
-  // after render
-  useEffect(() => {
-    // side effect
-    if (ref.current) ref.current.focus();
-  });
-
-  useEffect(() => {
-    document.title = "My App";
-  });
+  const [category, setCategory] = useState("");
 
   return (
     <div>
-      <input ref={ref} type="text" className="form-control" />
+      <select
+        onChange={(event) => setCategory(event.target.value)}
+        className="form-select"
+      >
+        <option value=""></option>
+        <option value="Clothing">Clothing</option>
+        <option value="Household">Household</option>
+      </select>
+      <ProductList category={category} />
     </div>
   );
 }
