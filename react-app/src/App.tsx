@@ -38,19 +38,19 @@ function App() {
   }, []);
 
   function deleteUser(user: User) {
-    const oroginalUsers = [...users];
+    const originalUsers = [...users];
     setUsers(users.filter((item) => item.id !== user.id));
 
     axios
       .delete("https://jsonplaceholder.typicode.com/users/" + user.id) //to simulate an error make link wrong
       .catch((err) => {
         setError(err.message);
-        setUsers(oroginalUsers);
+        setUsers(originalUsers);
       });
   }
 
   function addUser() {
-    const oroginalUsers = [...users];
+    const originalUsers = [...users];
     const newUser = {
       id: 99,
       name: "Naruto Uzumaki",
@@ -63,7 +63,24 @@ function App() {
       .then(({ data: savedUser }) => setUsers([...users, savedUser]))
       .catch((err) => {
         setError(err.message);
-        setUsers(oroginalUsers);
+        setUsers(originalUsers);
+      });
+  }
+
+  function updateUser(user: User) {
+    const originalUsers = [...users];
+    const updatedUser = { ...user, name: user.name + "!" };
+    setUsers(users.map((u) => (u.id === user.id ? updatedUser : u)));
+
+    axios
+      //to simulate en error, change link to wrong
+      .patch(
+        "https://jsonplaceholder.typicode.com/users/" + user.id,
+        updatedUser
+      )
+      .catch((err) => {
+        setError(err.message);
+        setUsers(originalUsers);
       });
   }
 
@@ -82,12 +99,20 @@ function App() {
             key={user.id}
           >
             {user.name}
-            <button
-              className="btn btn-outline-danger"
-              onClick={() => deleteUser(user)}
-            >
-              Delete
-            </button>
+            <div>
+              <button
+                className="btn btn-outline-secondary mx-1"
+                onClick={() => updateUser(user)}
+              >
+                Edit
+              </button>
+              <button
+                className="btn btn-outline-danger"
+                onClick={() => deleteUser(user)}
+              >
+                Delete
+              </button>
+            </div>
           </li>
         ))}
       </ul>
