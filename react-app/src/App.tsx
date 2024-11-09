@@ -49,11 +49,32 @@ function App() {
       });
   }
 
+  function addUser() {
+    const oroginalUsers = [...users];
+    const newUser = {
+      id: 99,
+      name: "Naruto Uzumaki",
+    };
+    setUsers([...users, newUser]);
+
+    axios
+      //to simulate en error, change link to wrong
+      .post("https://jsonplaceholder.typicode.com/users", newUser)
+      .then(({ data: savedUser }) => setUsers([...users, savedUser]))
+      .catch((err) => {
+        setError(err.message);
+        setUsers(oroginalUsers);
+      });
+  }
+
   return (
     <>
       {error && <p className="text-danger">{error}</p>}
       {/* To see the loader for longer we shold change throttling  to low connection (for example 3G), in browsers webDevTool > Network  */}
       {isLoading && <div className="spinner-border"></div>}
+      <button className="btn btn-primary mb-3" onClick={addUser}>
+        Add
+      </button>
       <ul className="list-group">
         {users.map((user) => (
           <li
