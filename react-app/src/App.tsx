@@ -37,6 +37,18 @@ function App() {
     };
   }, []);
 
+  function deleteUser(user: User) {
+    const oroginalUsers = [...users];
+    setUsers(users.filter((item) => item.id !== user.id));
+
+    axios
+      .delete("https://jsonplaceholder.typicode.com/users/" + user.id) //to simulate an error make link wrong
+      .catch((err) => {
+        setError(err.message);
+        setUsers(oroginalUsers);
+      });
+  }
+
   return (
     <>
       {error && <p className="text-danger">{error}</p>}
@@ -44,8 +56,17 @@ function App() {
       {isLoading && <div className="spinner-border"></div>}
       <ul className="list-group">
         {users.map((user) => (
-          <li className="list-group-item center" key={user.id}>
+          <li
+            className="list-group-item d-flex justify-content-between"
+            key={user.id}
+          >
             {user.name}
+            <button
+              className="btn btn-outline-danger"
+              onClick={() => deleteUser(user)}
+            >
+              Delete
+            </button>
           </li>
         ))}
       </ul>
