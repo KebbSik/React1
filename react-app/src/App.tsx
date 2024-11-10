@@ -1,11 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
-import apiClient, { CanceledError } from "./services/api-client";
-
-interface User {
-  id: number;
-  name: string;
-}
+import userService, { User } from "./services/user-service";
+import { CanceledError } from "axios";
 
 function App() {
   const [users, setUsers] = useState<User[]>([]);
@@ -13,12 +9,9 @@ function App() {
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
-    const controller = new AbortController();
     setLoading(true);
-    apiClient
-      .get<User[]>("/users", {
-        signal: controller.signal,
-      })
+    const { request, cancel } = userService.getAllUsers();
+    request
       .then((response) => {
         setUsers(response.data);
         setLoading(false);
@@ -28,10 +21,9 @@ function App() {
         setError(err.message);
         setLoading(false);
       });
-    // .finally(() => setLoading(false)); //better aproach but does't work at strict mode
 
     return () => {
-      controller.abort();
+      cancel();
     };
   }, []);
 
@@ -39,12 +31,10 @@ function App() {
     const originalUsers = [...users];
     setUsers(users.filter((item) => item.id !== user.id));
 
-    apiClient
-      .delete("/users/" + user.id) //to simulate an error make link wrong
-      .catch((err) => {
-        setError(err.message);
-        setUsers(originalUsers);
-      });
+    userService.deleteUser(user.id).catch((err) => {
+      setError(err.message);
+      setUsers(originalUsers);
+    });
   }
 
   function addUser() {
@@ -55,9 +45,8 @@ function App() {
     };
     setUsers([...users, newUser]);
 
-    apiClient
-      //to simulate en error, change link to wrong
-      .post("/users", newUser)
+    userService
+      .createUser(newUser)
       .then(({ data: savedUser }) => setUsers([...users, savedUser]))
       .catch((err) => {
         setError(err.message);
@@ -70,13 +59,10 @@ function App() {
     const updatedUser = { ...user, name: user.name + "!" };
     setUsers(users.map((u) => (u.id === user.id ? updatedUser : u)));
 
-    apiClient
-      //to simulate en error, change link to wrong
-      .patch("users/" + user.id, updatedUser)
-      .catch((err) => {
-        setError(err.message);
-        setUsers(originalUsers);
-      });
+    userService.updateUser(updatedUser).catch((err) => {
+      setError(err.message);
+      setUsers(originalUsers);
+    });
   }
 
   return (
