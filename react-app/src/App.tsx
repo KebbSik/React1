@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
-import ProductList from "./components/ProductList/ProductList";
-import { current } from "immer/src/internal.js";
-import axios, { AxiosError, CanceledError } from "axios";
+import apiClient, { CanceledError } from "./services/api-client";
 
 interface User {
   id: number;
@@ -17,8 +15,8 @@ function App() {
   useEffect(() => {
     const controller = new AbortController();
     setLoading(true);
-    axios
-      .get<User[]>("https://jsonplaceholder.typicode.com/users", {
+    apiClient
+      .get<User[]>("/users", {
         signal: controller.signal,
       })
       .then((response) => {
@@ -41,8 +39,8 @@ function App() {
     const originalUsers = [...users];
     setUsers(users.filter((item) => item.id !== user.id));
 
-    axios
-      .delete("https://jsonplaceholder.typicode.com/users/" + user.id) //to simulate an error make link wrong
+    apiClient
+      .delete("/users/" + user.id) //to simulate an error make link wrong
       .catch((err) => {
         setError(err.message);
         setUsers(originalUsers);
@@ -57,9 +55,9 @@ function App() {
     };
     setUsers([...users, newUser]);
 
-    axios
+    apiClient
       //to simulate en error, change link to wrong
-      .post("https://jsonplaceholder.typicode.com/users", newUser)
+      .post("/users", newUser)
       .then(({ data: savedUser }) => setUsers([...users, savedUser]))
       .catch((err) => {
         setError(err.message);
@@ -72,12 +70,9 @@ function App() {
     const updatedUser = { ...user, name: user.name + "!" };
     setUsers(users.map((u) => (u.id === user.id ? updatedUser : u)));
 
-    axios
+    apiClient
       //to simulate en error, change link to wrong
-      .patch(
-        "https://jsonplaceholder.typicode.com/users/" + user.id,
-        updatedUser
-      )
+      .patch("users/" + user.id, updatedUser)
       .catch((err) => {
         setError(err.message);
         setUsers(originalUsers);
